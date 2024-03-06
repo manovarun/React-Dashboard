@@ -8,6 +8,7 @@ const connectDB = require('./db');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const GlobalErrorHandler = require('./controllers/error');
 
 connectDB();
 
@@ -37,6 +38,8 @@ app.use('/client', clientRouter);
 app.use('/general', generalRouter);
 app.use('/management', managementRouter);
 app.use('/salesRouter', salesRouter);
+
+app.use(GlobalErrorHandler);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

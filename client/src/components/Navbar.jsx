@@ -13,7 +13,6 @@ import profileImage from 'assets/profile.jpeg';
 import {
   AppBar,
   IconButton,
-  Input,
   InputBase,
   Toolbar,
   useTheme,
