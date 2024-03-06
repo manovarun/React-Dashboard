@@ -3,7 +3,7 @@ const User = require('../models/User');
 const AppError = require('../utils/AppError');
 
 exports.getUser = asyncHandler(async (req, res, next) => {
-  const user = await User.findById(req.user._id);
+  const user = await User.findById(req.params.id);
 
   if (!user) return next(new AppError('User not found', 404));
 
