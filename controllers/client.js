@@ -28,3 +28,15 @@ exports.getProducts = asyncHandler(async (req, res, next) => {
     productsWithStats,
   });
 });
+
+exports.getCustomers = asyncHandler(async (req, res, next) => {
+  const customers = await User.find({ role: 'user' }).select('-password');
+
+  if (!customers) return next(new AppError('Customers not found', 404));
+
+  res.status(200).json({
+    status: 'success',
+    numResults: customers.length,
+    customers,
+  });
+});
