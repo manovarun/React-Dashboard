@@ -1,17 +1,40 @@
 const dotenv = require('dotenv').config({ path: '.env' });
-const { dataUser } = require('.');
+const { dataUser, dataProduct, dataProductStat } = require('.');
 const connectDB = require('../db');
+const Product = require('../models/Product');
+const ProductStat = require('../models/ProductStat');
 const User = require('../models/User');
 
 connectDB();
 
-const importData = async () => {
-  const users = dataUser.map((user) => ({
-    ...user,
-  }));
+const importUserData = async () => {
   try {
     await User.deleteMany();
-    await User.insertMany(users);
+    await User.insertMany(dataUser);
+    console.log('Data successfully imported!'.green.inverse);
+    process.exit();
+  } catch (error) {
+    console.error(`${error}`.red.inverse);
+    process.exit(1);
+  }
+};
+
+const importProductData = async () => {
+  try {
+    await Product.deleteMany();
+    await Product.insertMany(dataProduct);
+    console.log('Data successfully imported!'.green.inverse);
+    process.exit();
+  } catch (error) {
+    console.error(`${error}`.red.inverse);
+    process.exit(1);
+  }
+};
+
+const importProductStatData = async () => {
+  try {
+    await ProductStat.deleteMany();
+    await ProductStat.insertMany(dataProductStat);
     console.log('Data successfully imported!'.green.inverse);
     process.exit();
   } catch (error) {
@@ -23,6 +46,8 @@ const importData = async () => {
 const deleteData = async () => {
   try {
     await User.deleteMany();
+    await Product.deleteMany();
+    await ProductStat.deleteMany();
     console.log('Data successfully deleted!'.red.inverse);
     process.exit();
   } catch (error) {
@@ -31,8 +56,12 @@ const deleteData = async () => {
   }
 };
 
-if (process.argv[2] === '-i') {
-  return importData();
+if (process.argv[2] === '-user') {
+  return importUserData();
+} else if (process.argv[2] === '-product') {
+  return importProductData();
+} else if (process.argv[2] === '-productstat') {
+  return importProductStatData();
 } else if (process.argv[2] === '-d') {
   return deleteData();
 }
