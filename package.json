@@ -9,7 +9,8 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "data:user": "node data/import.js -user",
     "data:product": "node data/import.js -product",
-    "data:productstat": "node data/import.js -productstat",
+    "data:productStat": "node data/import.js -productStat",
+    "data:dataTransaction": "node data/import.js -dataTransaction",
     "data:delete": "node data/import.js -d"
   },
   "dependencies": {
