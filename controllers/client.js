@@ -1,4 +1,5 @@
 const asyncHandler = require('express-async-handler');
+const getCountryIso3 = require('country-iso-2-to-3');
 const User = require('../models/User');
 const AppError = require('../utils/AppError');
 const ProductStat = require('../models/ProductStat');
@@ -73,4 +74,28 @@ exports.getTransactions = asyncHandler(async (req, res, next) => {
   });
 
   res.status(200).json({ status: 'success', transactions, total });
+});
+
+exports.getGeography = asyncHandler(async (req, res, next) => {
+  const users = await User.find();
+
+  const mappedLocations = users.reduce((acc, { country }) => {
+    const countryISO3 = getCountryIso3(country);
+    if (!acc[countryISO3]) {
+      acc[countryISO3] = 0;
+    }
+    acc[countryISO3]++;
+    return acc;
+  }, {});
+
+  const formattedLocations = Object.entries(mappedLocations).map(
+    ([country, count]) => {
+      return { id: country, value: count };
+    }
+  );
+
+  if (!formattedLocations)
+    return next(new AppError('Locations not found', 404));
+
+  res.status(200).json({ status: 'success', formattedLocations });
 });
