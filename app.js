@@ -37,7 +37,7 @@ app.use('/', indexRouter);
 app.use('/client', clientRouter);
 app.use('/general', generalRouter);
 app.use('/management', managementRouter);
-app.use('/salesRouter', salesRouter);
+app.use('/sales', salesRouter);
 
 app.use(GlobalErrorHandler);
 

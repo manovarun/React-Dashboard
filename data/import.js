@@ -4,8 +4,10 @@ const {
   dataProduct,
   dataProductStat,
   dataTransaction,
+  dataOverallStat,
 } = require('.');
 const connectDB = require('../db');
+const OverallStat = require('../models/OverallStat');
 const Product = require('../models/Product');
 const ProductStat = require('../models/ProductStat');
 const Transaction = require('../models/Transaction');
@@ -61,11 +63,25 @@ const importDataTransaction = async () => {
   }
 };
 
+const importOverallStat = async () => {
+  try {
+    await OverallStat.deleteMany();
+    await OverallStat.insertMany(dataOverallStat);
+    console.log('Data successfully imported!'.green.inverse);
+    process.exit();
+  } catch (error) {
+    console.error(`${error}`.red.inverse);
+    process.exit(1);
+  }
+};
+
 const deleteData = async () => {
   try {
     await User.deleteMany();
     await Product.deleteMany();
     await ProductStat.deleteMany();
+    await Transaction.deleteMany();
+    await OverallStat.deleteMany();
     console.log('Data successfully deleted!'.red.inverse);
     process.exit();
   } catch (error) {
@@ -82,6 +98,8 @@ if (process.argv[2] === '-user') {
   return importProductStatData();
 } else if (process.argv[2] === '-dataTransaction') {
   return importDataTransaction();
+} else if (process.argv[2] === '-dataOverallStat') {
+  return importOverallStat();
 } else if (process.argv[2] === '-d') {
   return deleteData();
 }

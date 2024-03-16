@@ -11,6 +11,7 @@
     "data:product": "node data/import.js -product",
     "data:productStat": "node data/import.js -productStat",
     "data:dataTransaction": "node data/import.js -dataTransaction",
+    "data:dataOverallStat": "node data/import.js -dataOverallStat",
     "data:delete": "node data/import.js -d"
   },
   "dependencies": {
